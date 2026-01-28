@@ -1,30 +1,60 @@
 # CV Optimizer
 
-A small toolkit for analyzing CVs (résumés) and job descriptions, and generating tailored cover letters.
+Benim projem: CV Optimizer. Bu repo, iş ilanları ile özgeçmişleri karşılaştırıp; uygunluk analizi, anahtar kelime çıkarımı ve örnek ön yazı (cover letter) üretimi yapmayı amaçlar. Aşağıda projeyi, kullandığım bileşenleri ve mevcut durumunu benim dilimle ve doğrudan çalışma talimatı vermeden özetliyorum.
 
-This repository contains a Streamlit web app and a Jupyter notebook used during development.
+**Ne yapıyor**
+- İş ilanı ile tek veya birden fazla özgeçmiş arasındaki eşleşmeleri vurgular.
+- Metin parçalarını (CV / ilan) vektörlere dönüştürerek benzerlik araması (RAG-benzeri yaklaşım) yapar.
+- Özet, anahtar kelime çıkarımı ve cover letter taslağı üretir.
 
-## What is in this project
+**Kullandığım teknolojiler & rollerim**
+- **Python 3.12 (tercih edilen geliştirme ortamı)**: Proje geliştirmesi ve paket uyumluluğu için kullandığım sürüm.
+- **Streamlit**: Kullanıcı arayüzü (tek sayfa, yükleme ve sonuç gösterimi).
+- **ChromaDB**: Vektör tabanlı arama/depolama (retrieval) için kullandığım hafif veri deposu.
+- **Ollama**: Yerel LLM istemci arayüzü — analiz ve ön yazı üretimi için model çağrıları bu katmandan yapılır.
+- **sentence-transformers**: Metinleri gömme (embedding) formatına dönüştürmek için.
+- **pypdf / python-docx**: PDF ve DOCX formatlı CV/ilan dosyalarını okumak için.
+- **Basit metin bölücü (simple_text_splitter)**: Uzun metinleri parçalara ayırarak vektörleştirmeye uygun hale getiririm (langchain bağımlılığı kaldırıldı; sadece gerekli basit bölme mantığı kullanılıyor).
 
-- `cv_optimizer_app.py` — Streamlit application for uploading a CV and a job description (PDF or TXT), performing keyword matching, a simple semantic retrieval using ChromaDB, and generating a cover letter via Ollama.
-- `cv_optimizer.ipynb` — Development notebook with the original data exploration, helper functions and experiments.
-- `data/` — (optional) folder for sample CVs or job descriptions.
-- `requirements.txt` — minimal list of Python packages needed to run the app locally.
-- `.gitignore` — recommended ignores for virtual environments and temporary files.
+**Mimari (kısa)**
+- Yüklenen CV/ilan -> metin çıkarımı -> metin parçalama -> embedding -> ChromaDB'e ekleme.
+- Sorgu/analiz gerektiğinde uygun parçalar ChromaDB'den çekilir ve Ollama'ya analiz/üretim için gönderilir.
 
-## What I changed / implemented
+**Depodaki önemli dosyalar**
+- [cv_optimizer_app.py](cv_optimizer_app.py): Streamlit arayüzü ve ana iş akışı burada yer alır.
+- [cv_optimizer.ipynb](cv_optimizer.ipynb): Geliştirme notlarım, denemeler ve orijinal çalışma notebook'u.
+- [requirements.txt](requirements.txt): Projede kullandığım ana Python paketleri (listeleme amaçlı).
 
-- Migrated the interactive CLI/menu from the notebook into a Streamlit app (`cv_optimizer_app.py`).
-- Added a simple text-splitting helper to avoid an unnecessary dependency for basic chunking.
-- Integrated ChromaDB usage for storing and querying CV/job chunks (requires `chromadb`).
-- Integrated callouts to Ollama for LLM-driven analysis and cover letter generation (requires an Ollama model installed locally).
-- Made the app robust to PDF and TXT uploads and fixed several text-decoding issues.
-- Added safety around environment reporting (removed accidental display of local interpreter/pip output).
+**Mevcut durum**
+- Uygulama Streamlit tabanlı olarak çalışır hâlde; Python 3.12 tabanlı bir sanal ortam (benim geliştirme ortamım) kullanılarak test edildi.
+- ChromaDB ile embedding+retrieval akışı ve Ollama ile üretim entegrasyonu uygulanmış durumda.
+- Bazı geliştirme kısımları (ör. çoklu CV toplu işleme arayüzü veya daha kapsamlı hata yönetimi) istenirse genişletilebilir.
 
-## Quick start (local)
+**Notlar / politika**
+- README, doğrudan çalışma/kurulum komutları veya "şunu şunu yapın" tarzı yönergeler içermez; amacım projeyi ve kullandıklarımı açıkça anlatmak.
 
-1. Install Python 3.12 on your system (recommended for compatibility with all dependencies).
-2. From the project root create and activate a virtual environment (example for Windows PowerShell):
+İsterseniz bu değişikliği commit edip remote'a pushlayabilirim; onay verirseniz bir sonraki adımı ben yaparım.
+
+Projede neler var
+
+- `cv_optimizer_app.py` — Streamlit tabanlı web uygulaması. PDF veya TXT formatında CV ve iş ilanı yükleyip anahtar kelime analizleri, basit bir semantic retrieval (ChromaDB) ve Ollama ile ön yazı üretimi yapabiliyor.
+- `cv_optimizer.ipynb` — Geliştirme aşamasında kullandığım not defteri; veri keşfi, yardımcı fonksiyonlar ve deneyler burada.
+- `data/` — (isteğe bağlı) örnek CV veya iş ilanlarını koymak için klasör.
+- `requirements.txt` — projeyi çalıştırmak için gereken paketlerin listesi.
+- `.gitignore` — sanal ortamlar ve geçici dosyalar için önerilen ignore kuralları.
+
+Ben ne yaptım / neden burada
+
+- Notebook içindeki interaktif menüyü Streamlit uygulamasına taşıdım.
+- Metin parçalama (chunking) için gereksiz bir büyük bağımlılığa girmemek adına basit ve güvenilir bir splitter ekledim.
+- CV ve iş ilanı metinlerini parçalayıp ChromaDB'ye ekleyerek semantic arama yapılmasını sağladım (ChromaDB kuruluysa çalışır).
+- Ollama kullanarak (lokal model) CV ile iş ilanı arasında daha zengin analizler ve ön yazı taslağı üretebilme özelliği ekledim.
+- PDF/TXT okuma ve metin kodlama sorunlarını düzelttim, uygulamayı daha sağlam hale getirdim.
+
+Hızlı başlangıç (lokal)
+
+1. Python 3.12 kurulu olması tavsiye edilir.
+2. Proje klasöründe sanal ortam oluşturup aktif edin (Windows PowerShell örneği):
 
 ```powershell
 py -3.12 -m venv venv
@@ -33,40 +63,29 @@ python -m pip install -U pip setuptools wheel
 python -m pip install -r requirements.txt
 ```
 
-3. Run the Streamlit app:
+3. Uygulamayı çalıştırın:
 
 ```powershell
 python -m streamlit run cv_optimizer_app.py
 ```
 
-4. Open the URL printed by Streamlit (typically `http://localhost:8501`).
+4. Tarayıcıda Streamlit'in verdiği yerel adresi açın (genellikle `http://localhost:8501`).
 
-## Notes and prerequisites
+Notlar
 
-- ChromaDB: used as an on-disk vector store. Installing some versions may require build tools on Windows if prebuilt wheels are not available.
-- Ollama: the app calls `ollama.generate(...)`. You need Ollama installed and a compatible local model (e.g. `llama3.2`) configured if you want LLM features to work.
-- If you prefer not to install `chromadb` or `ollama`, you can still use the basic keyword-matching features of the app.
+- ChromaDB bazı sistemlerde (özellikle Windows) ek build araçları gerektirebilir; bu durumda alternatif olarak basit in-memory yöntemlerle de çalıştırabilirsiniz.
+- Ollama çağrıları (`ollama.generate`) için bilgisayarınızda Ollama ve uygun bir model yüklü olmalıdır.
 
-## How to push to GitHub
+GitHub'a yüklemek
 
-If you want to add these files to the GitHub repo `https://github.com/BerkayBeratBayram/cv-optimizer`, run:
+Ben bu repository'ye pushladım; isterseniz siz de lokalinizde aynı adımları takip ederek çalıştırabilirsiniz. Eğer başka bir düzenleme veya ek açıklama istiyorsanız söyleyin, ben güncelleyeyim ve tekrar pushlayayım.
 
-```bash
-git add README.md .gitignore requirements.txt
-git commit -m "Add README, .gitignore and requirements"
-git remote add origin https://github.com/BerkayBeratBayram/cv-optimizer.git
-git branch -M main
-git push -u origin main
-```
+Gelecek planları (opsiyonel)
 
-If the remote is already set, skip the `git remote add` step.
-
-## Next steps (optional)
-
-- Add a simple example CV and job posting to `data/` so users can try the app instantly.
-- Add unit tests for parsing and keyword extraction.
-- Add an option to run without ChromaDB (in-memory embeddings + nearest-neighbor search) for easier setup.
+- `data/` içine örnek CV ve iş ilanı ekleyerek deneme kolaylığı sağlayabilirim.
+- Anahtar kelime çıkarımı ve eşleştirme için daha iyi testler ekleyebilirim.
+- ChromaDB kurulumunu atlatmak isteyenler için in-memory fallback seçeneği ekleyebilirim.
 
 ---
 
-If you want, I can push these changes to the GitHub repository for you (I will need your permission and remote credentials), or I can run the git commands locally here and you can push. Which do you prefer?
+Bu README'yi daha da kişiselleştirmemi isterseniz, doğrudan eklememi istediğiniz metni yazın; ben eklerim ve tekrar pushlarım.
