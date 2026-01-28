@@ -1,0 +1,7 @@
+streamlit
+chromadb
+ollama
+pypdf
+sentence-transformers
+langchain
+python-docx
