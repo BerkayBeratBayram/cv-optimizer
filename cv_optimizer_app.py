@@ -133,6 +133,14 @@ if cv_file and job_file:
 else:
     st.info("CV ve iş ilanı dosyalarını yükleyin.")
 
-"""
-Interpreter and pip listing removed by user request.
-"""
+# Show current interpreter and installed packages (uses current Python executable)
+st.write("Python executable:")
+st.write(sys.executable)
+st.write("Python version:")
+st.write(sys.version)
+st.write("Pip list (current environment):")
+try:
+    pip_out = subprocess.run([sys.executable, "-m", "pip", "list"], capture_output=True, text=True)
+    st.text(pip_out.stdout)
+except Exception as e:
+    st.error(f"Pip list error: {e}")
