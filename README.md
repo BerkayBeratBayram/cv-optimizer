@@ -85,7 +85,3 @@ Gelecek planları (opsiyonel)
 - `data/` içine örnek CV ve iş ilanı ekleyerek deneme kolaylığı sağlayabilirim.
 - Anahtar kelime çıkarımı ve eşleştirme için daha iyi testler ekleyebilirim.
 - ChromaDB kurulumunu atlatmak isteyenler için in-memory fallback seçeneği ekleyebilirim.
-
----
-
-Bu README'yi daha da kişiselleştirmemi isterseniz, doğrudan eklememi istediğiniz metni yazın; ben eklerim ve tekrar pushlarım.
