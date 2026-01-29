@@ -1,6 +1,6 @@
 # CV Optimizer
 
-Benim projem: CV Optimizer. Bu repo, iş ilanları ile özgeçmişleri karşılaştırıp; uygunluk analizi, anahtar kelime çıkarımı ve örnek ön yazı (cover letter) üretimi yapmayı amaçlar. Aşağıda projeyi, kullandığım bileşenleri ve mevcut durumunu benim dilimle ve doğrudan çalışma talimatı vermeden özetliyorum.
+Benim projem: CV Optimizer. Bu repo, iş ilanları ile özgeçmişleri karşılaştırıp; uygunluk analizi, anahtar kelime çıkarımı ve örnek ön yazı (cover letter) üretimi yapmayı amaçlar. Aşağıda projeyi, kullandığım bileşenleri ve mevcut durumunu özetliyorum.
 
 **Ne yapıyor**
 - İş ilanı ile tek veya birden fazla özgeçmiş arasındaki eşleşmeleri vurgular.
